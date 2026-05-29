@@ -1,7 +1,5 @@
 # Plan: AI Incubator Knowledge Base Platform
 
-Source of truth for restructuring Naiton.Rag.Service into the AiIncubator mentorship-program platform. Keep up to date; do not append-only.
-
 ## Participant and Program
 
 - Participant: Diyorbek
@@ -22,13 +20,6 @@ Source of truth for restructuring Naiton.Rag.Service into the AiIncubator mentor
 - src/AiIncubator.Server: ported .NET 10 backend, namespace AiIncubator.Server
 - src/AiIncubator.Client: React 19 + TypeScript + Vite + Tailwind + React Router 7 + Clerk
 - tests/AiIncubator.Server.Tests: ported xUnit suite, namespace AiIncubator.Server.Tests
-
-## Rename Rules
-
-- Namespace and folder Naiton.Rag.Service to AiIncubator.Server (covers using statements and test namespace prefix).
-- csproj and project references renamed to AiIncubator.Server and AiIncubator.Server.Tests.
-- Qdrant collection naiton-rag to ai-incubator. Docker container naiton-rag-qdrant to ai-incubator-qdrant. Volume renamed to match.
-- Keep public partial class Program for test host.
 
 ## Backend Work (Week 1)
 
