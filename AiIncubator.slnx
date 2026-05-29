@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="src/AiIncubator.Server/AiIncubator.Server.csproj" />
+  <Project Path="tests/AiIncubator.Server.Tests/AiIncubator.Server.Tests.csproj" />
+</Solution>

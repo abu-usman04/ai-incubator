@@ -427,3 +427,9 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# AI Incubator client (Vite/React)
+src/AiIncubator.Client/dist/
+src/AiIncubator.Client/node_modules/
+.env
+.env.local

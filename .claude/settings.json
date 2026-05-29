@@ -1,0 +1,74 @@
+{
+  "env": {
+    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "80",
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(bun *)",
+      "Bash(bunx *)",
+      "Bash(npx *)",
+      "Bash(curl *)",
+      "Bash(dotnet *)",
+      "Bash(git *)",
+      "Bash(mkdir *)",
+      "Bash(ls *)",
+      "Bash(rm *)",
+      "Bash(grep *)",
+      "Bash(pg_isready *)",
+      "mcp__*",
+      "WebSearch",
+      "WebFetch(domain:*)",
+      "Bash(E2E_EMAIL=\"qatest@threadline.com\" bunx playwright test brave-walkthrough.spec.ts golden-path.spec.ts sketch-flow.spec.ts auth-smoke.spec.ts qa-smoke.spec.ts --workers=1 --reporter=list)",
+      "Bash(E2E_EMAIL=\"qatest@threadline.com\" bunx playwright test qa-smoke.spec.ts --workers=1 --reporter=list)",
+      "Bash(E2E_EMAIL=\"qatest@threadline.com\" bunx playwright test brave-walkthrough.spec.ts golden-path.spec.ts sketch-flow.spec.ts auth-smoke.spec.ts --workers=1 --reporter=list)",
+      "Bash(E2E_EMAIL=\"qatest@threadline.com\" bunx playwright test auth-smoke.spec.ts --workers=1 --reporter=list)",
+      "Read(//d/Development/awesome-design/**)",
+      "Read(//d/Development/awesome-design/design-md/**)",
+      "Read(//c/Users/i123l/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.7/skills/brainstorming/**)",
+      "Bash(\"C:/Users/i123l/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.7/skills/brainstorming/scripts/start-server.sh\" --project-dir \"D:/Development/sketchbook\")",
+      "Read(//c/Users/i123l/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.7/skills/subagent-driven-development/**)",
+      "Bash(E2E_EMAIL=\"qatest@threadline.com\" E2E_PASSWORD=\"Kp8V7UG#Y%z2\" bunx --cwd \"D:/Development/sketchbook/src/web\" playwright test preset-picker.spec.ts --workers=1 --reporter=list)",
+      "Bash(E2E_EMAIL=\"qatest@threadline.com\" E2E_PASSWORD=\"Kp8V7UG#Y%z2\" bunx playwright test --workers=1 --grep-invert \"app.spec|sketch-flow\" --reporter=list)",
+      "Bash(E2E_EMAIL=\"qatest@threadline.com\" E2E_PASSWORD=\"Kp8V7UG#Y%z2\" bunx playwright test screen-count.spec.ts --workers=1 --reporter=list)",
+      "Bash(xargs -I{} cat \"{}state/server-info\")",
+      "Bash(\"C:/Users/i123l/.claude/plugins/cache/claude-plugins-official/superpowers/5.0.7/skills/brainstorming/scripts/start-server.sh\" --project-dir \"D:/Development/sketchbook\" --port 51808)"
+    ],
+    "deny": [
+      "Write(.env)",
+      "Write(.env.local)",
+      "Write(.env.*.local)",
+      "Write(bun.lock)",
+      "Write(bun.lockb)",
+      "Write(package-lock.json)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "grep -qE '\\.cs\"' && cd \"$CLAUDE_PROJECT_DIR/src/api\" && dotnet build ThreadlineStudio.Api.csproj --nologo -v q 2>&1 | tail -20 || true",
+            "timeout": 45,
+            "statusMessage": "Building C# API..."
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "grep -qE '\\.(ts|tsx)\"' && cd \"$CLAUDE_PROJECT_DIR/src/web\" && bunx tsc --noEmit --incremental false 2>&1 | tail -20 || true",
+            "timeout": 60,
+            "statusMessage": "Type-checking frontend..."
+          }
+        ]
+      }
+    ]
+  },
+  "plansDirectory": ".claude/plans",
+  "autoMemoryDirectory": ".claude/memory"
+}
