@@ -11,6 +11,12 @@ using AiIncubator.Server.Services.Retrieval;
 
 public class RagWebApplicationFactory : WebApplicationFactory<Program>
 {
+    static RagWebApplicationFactory()
+    {
+        // Tests must not pick up a developer's local .env (which may enable Clerk auth).
+        Environment.SetEnvironmentVariable("AIINCUBATOR_SKIP_DOTENV", "1");
+    }
+
     public Mock<IIngestionService> Ingestion { get; } = new();
 
     public Mock<IQueryService> Query { get; } = new();

@@ -13,7 +13,7 @@ namespace AiIncubator.Server.Services.Embeddings;
 /// </summary>
 /// <remarks>
 /// Assumes the server exposes POST {ServerUrl}/embed accepting
-/// { "texts": ["..."] } and returning { "embeddings": [[...], ...] }.
+/// { "sentences": ["..."] } and returning { "dense": [[...], ...] }.
 /// If the real contract differs, only this class and its DTOs change.
 /// </remarks>
 public class BgeLargeEmbeddingClient(HttpClient httpClient, IOptions<EmbeddingOptions> options) : IEmbeddingClient
@@ -82,8 +82,8 @@ public class BgeLargeEmbeddingClient(HttpClient httpClient, IOptions<EmbeddingOp
                 "INTERNAL_ERROR");
         }
 
-        ValidateVectorSize(payload.Embeddings);
-        return payload.Embeddings;
+        ValidateVectorSize(payload.Dense);
+        return payload.Dense;
     }
 
     #endregion

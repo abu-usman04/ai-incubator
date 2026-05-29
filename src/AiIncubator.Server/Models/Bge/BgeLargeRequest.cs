@@ -6,11 +6,11 @@ namespace AiIncubator.Server.Models.Bge;
 /// Request body for the internal BGE-Large embedding server.
 /// Endpoint: <c>POST {EmbeddingServerUrl}/embed</c>
 /// </summary>
-public class BgeLargeRequest(IReadOnlyList<string> texts)
+public class BgeLargeRequest(IReadOnlyList<string> sentences)
 {
     /// <summary>
-    /// Texts to embed, one vector returned per item in the same order.
+    /// Sentences to embed, one vector returned per item in the same order.
     /// </summary>
-    [JsonPropertyName("texts")]
-    public IReadOnlyList<string> Texts { get; init; } = texts;
+    [JsonPropertyName("sentences")]
+    public IReadOnlyList<string> Sentences { get; init; } = sentences;
 }

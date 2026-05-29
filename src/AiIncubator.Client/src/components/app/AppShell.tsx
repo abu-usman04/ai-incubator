@@ -10,7 +10,7 @@ const titles: Record<string, string> = {
 
 export function AppShell() {
   const { pathname } = useLocation();
-  const title = titles[pathname] ?? 'AI Incubator';
+  const title = titles[pathname] ?? 'Ilm AI';
 
   return (
     <div className="flex h-full">

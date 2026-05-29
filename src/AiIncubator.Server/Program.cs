@@ -4,6 +4,10 @@ using AiIncubator.Server.Common.Helpers.Configurations;
 using AiIncubator.Server.Common.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
+if (Environment.GetEnvironmentVariable("AIINCUBATOR_SKIP_DOTENV") != "1")
+{
+    builder.Configuration.AddDotEnvFile(Path.Combine(builder.Environment.ContentRootPath, ".env"));
+}
 
 const string ClientCorsPolicy = "client";
 string[] allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [];

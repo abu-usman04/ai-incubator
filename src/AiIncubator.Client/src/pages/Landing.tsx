@@ -6,7 +6,7 @@ import { clerkEnabled } from '../lib/config';
 const features = [
   { title: 'Upload documents', body: 'Bring your text and markdown knowledge. Files are parsed and chunked automatically.' },
   { title: 'Embeddings & vectors', body: 'Each chunk is embedded and stored in a Qdrant vector index for fast semantic search.' },
-  { title: 'Chat with sources', body: 'Ask questions and get answers grounded in your documents, with citations.' },
+  { title: 'Chat with sources', body: 'Ask questions and get clear answers grounded in your documents, with the sources shown alongside.' },
   { title: 'Knowledge modules', body: 'Group related documents into modules and sync them as your knowledge grows.' },
 ];
 
@@ -18,9 +18,9 @@ export function Landing() {
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
         <div className="flex items-center gap-2">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-600 text-sm font-bold text-white">
-            AI
+            I
           </div>
-          <span className="text-lg font-semibold text-slate-800">AI Incubator</span>
+          <span className="text-lg font-semibold text-slate-800">Ilm AI</span>
         </div>
         <Link to={primaryHref}>
           <Button variant="secondary">Sign in</Button>

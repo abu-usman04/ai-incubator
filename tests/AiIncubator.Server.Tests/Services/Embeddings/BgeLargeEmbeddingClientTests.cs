@@ -32,7 +32,7 @@ public class BgeLargeEmbeddingClientTests
         sent.RequestUri!.ToString().Should().Be($"{BaseUrl}embed");
 
         BgeLargeRequest? body = await sent.Content!.ReadFromJsonAsync<BgeLargeRequest>();
-        body!.Texts.Should().ContainSingle().Which.Should().Be("hello world");
+        body!.Sentences.Should().ContainSingle().Which.Should().Be("hello world");
     }
 
     [Fact]

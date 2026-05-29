@@ -1,0 +1,28 @@
+Acme Cloud — Support Runbook
+
+Purpose
+This runbook helps support engineers resolve the most common customer issues quickly.
+
+1. Customer cannot connect to their Vector DB
+- Confirm the project status is "Active" in the admin console.
+- Verify the customer is using the correct region endpoint (Frankfurt, Singapore, or Virginia).
+- Check that the API key has not been rotated or revoked.
+- If the endpoint is reachable but authentication fails, ask the customer to regenerate the key.
+
+2. Slow search queries
+- Check the collection size; collections above 10 million vectors should use the Business plan.
+- Confirm the distance metric is Cosine for text embeddings.
+- Recommend reducing topK if the customer requests more than 20 results.
+
+3. Billing questions
+- Plan changes take effect immediately; charges are prorated.
+- Refunds for annual plans are available within the first 30 days (prorated).
+- Direct invoice and tax questions to billing@acmecloud.example.
+
+4. Data residency requests
+- Region cannot be changed after project creation.
+- To move data, create a new project in the target region and re-ingest.
+
+Escalation
+If an issue is not resolved within the plan's response window, escalate to the on-call engineer
+through the #oncall channel and tag the customer's plan tier.

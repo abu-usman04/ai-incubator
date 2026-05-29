@@ -433,3 +433,6 @@ src/AiIncubator.Client/dist/
 src/AiIncubator.Client/node_modules/
 .env
 .env.local
+
+# Crash dumps
+*.stackdump
