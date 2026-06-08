@@ -4,6 +4,8 @@ const links = [
   { to: '/app', label: 'Dashboard', end: true },
   { to: '/app/documents', label: 'Documents', end: false },
   { to: '/app/chat', label: 'Chat', end: false },
+  { to: '/app/quiz', label: 'Quiz', end: false },
+  { to: '/app/plan', label: 'Learning Plan', end: false },
 ];
 
 export function Sidebar() {

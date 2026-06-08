@@ -35,6 +35,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddOpenApi();
 builder.Services.AddAiIncubatorAuth(builder.Configuration);
 builder.Services.AddRagServices(builder.Configuration);
+builder.Services.AddTelegramServices(builder.Configuration);
 
 var app = builder.Build();
 

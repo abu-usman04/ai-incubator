@@ -29,15 +29,7 @@ public class QueryService(
 
     public async Task<RagAnswer> AnswerAsync(string question, int topK, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(question))
-        {
-            throw new AppException(HttpStatusCode.BadRequest, "question is required.", "BAD_REQUEST");
-        }
-
-        int effectiveTopK = ResolveTopK(topK);
-        float[] queryVector = await embeddings.EmbedAsync(question, cancellationToken);
-        IReadOnlyList<RetrievedChunk> sources = await vectorStore.SearchAsync(
-            queryVector, effectiveTopK, cancellationToken);
+        IReadOnlyList<RetrievedChunk> sources = await RetrieveAsync(question, topK, cancellationToken);
 
         if (sources.Count == 0)
         {
@@ -47,6 +39,21 @@ public class QueryService(
         RagPrompt prompt = promptBuilder.Build(question, sources);
         string answer = await chat.CompleteAsync(prompt.System, prompt.User, cancellationToken);
         return new RagAnswer(answer, sources);
+    }
+
+    public async Task<IReadOnlyList<RetrievedChunk>> RetrieveAsync(
+        string query,
+        int topK,
+        CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(query))
+        {
+            throw new AppException(HttpStatusCode.BadRequest, "query is required.", "BAD_REQUEST");
+        }
+
+        int effectiveTopK = ResolveTopK(topK);
+        float[] queryVector = await embeddings.EmbedAsync(query, cancellationToken);
+        return await vectorStore.SearchAsync(queryVector, effectiveTopK, cancellationToken);
     }
 
     #endregion

@@ -41,6 +41,44 @@ public class QueryServiceTests
     }
 
     [Fact]
+    public async Task RetrieveAsync_EmbedsQueryAndReturnsChunks_WithoutCallingChat()
+    {
+        Mock<IEmbeddingClient> embeddings = new();
+        Mock<IVectorStore> vectorStore = new();
+        Mock<IChatCompletionClient> chat = new();
+
+        embeddings.Setup(e => e.EmbedAsync("onboarding", It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new[] { 1f, 0f });
+        var hits = new[]
+        {
+            new RetrievedChunk("doc-1#0", "Onboarding context.", 0.8f, new Dictionary<string, string>())
+        };
+        vectorStore.Setup(v => v.SearchAsync(It.IsAny<IReadOnlyList<float>>(), 5, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(hits);
+
+        QueryService service = Create(embeddings.Object, vectorStore.Object, chat.Object, defaultTopK: 4);
+
+        IReadOnlyList<RetrievedChunk> chunks = await service.RetrieveAsync("onboarding", topK: 5, CancellationToken.None);
+
+        chunks.Should().BeEquivalentTo(hits);
+        chat.Verify(c => c.CompleteAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task RetrieveAsync_BlankQuery_Throws()
+    {
+        QueryService service = Create(
+            Mock.Of<IEmbeddingClient>(),
+            Mock.Of<IVectorStore>(),
+            Mock.Of<IChatCompletionClient>(),
+            defaultTopK: 4);
+
+        Func<Task> act = () => service.RetrieveAsync("   ", topK: 4, CancellationToken.None);
+
+        (await act.Should().ThrowAsync<AppException>()).Which.ErrorCode.Should().Be("BAD_REQUEST");
+    }
+
+    [Fact]
     public async Task AnswerAsync_EmptySources_ReturnsIDontKnowWithoutCallingChat()
     {
         Mock<IEmbeddingClient> embeddings = new();
