@@ -7,6 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Moq;
 using AiIncubator.Server.Services.Ingestion;
+using AiIncubator.Server.Services.LearningPlans;
+using AiIncubator.Server.Services.Quizzes;
 using AiIncubator.Server.Services.Retrieval;
 
 public class RagWebApplicationFactory : WebApplicationFactory<Program>
@@ -20,6 +22,10 @@ public class RagWebApplicationFactory : WebApplicationFactory<Program>
     public Mock<IIngestionService> Ingestion { get; } = new();
 
     public Mock<IQueryService> Query { get; } = new();
+
+    public Mock<IQuizService> Quiz { get; } = new();
+
+    public Mock<ILearningPlanService> Plans { get; } = new();
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -43,6 +49,8 @@ public class RagWebApplicationFactory : WebApplicationFactory<Program>
         {
             services.Replace(ServiceDescriptor.Singleton(Ingestion.Object));
             services.Replace(ServiceDescriptor.Singleton(Query.Object));
+            services.Replace(ServiceDescriptor.Singleton(Quiz.Object));
+            services.Replace(ServiceDescriptor.Singleton(Plans.Object));
         });
     }
 }

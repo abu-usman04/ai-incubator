@@ -53,6 +53,95 @@ export interface ChatSession {
   createdAt: string;
 }
 
+export type QuestionType = 'MultipleChoice' | 'ShortAnswer';
+export type AttemptStatus = 'InProgress' | 'Completed';
+export type QuizStatus = 'Ready';
+
+export interface QuizQuestion {
+  id: string;
+  type: QuestionType;
+  prompt: string;
+  options: string[];
+  correctOptionIndex?: number | null;
+  expectedAnswer?: string | null;
+  points: number;
+}
+
+export interface Quiz {
+  id: string;
+  title: string;
+  topic: string;
+  moduleId?: string | null;
+  status: QuizStatus;
+  questions: QuizQuestion[];
+  createdAt: string;
+}
+
+export interface QuizAnswer {
+  questionId: string;
+  selectedOptionIndex?: number | null;
+  text?: string | null;
+  isCorrect: boolean;
+  awardedPoints: number;
+  feedback?: string | null;
+}
+
+export interface QuizAttempt {
+  id: string;
+  quizId: string;
+  status: AttemptStatus;
+  answers: QuizAnswer[];
+  score: number;
+  maxScore: number;
+  startedAt: string;
+  completedAt?: string | null;
+}
+
+export interface GenerateQuizInput {
+  topic?: string;
+  moduleId?: string;
+  questionCount?: number;
+  includeShortAnswer?: boolean;
+}
+
+export interface SubmitAnswerInput {
+  questionId: string;
+  selectedOptionIndex?: number;
+  text?: string;
+}
+
+export type PlanTaskType = 'Read' | 'Quiz' | 'Chat';
+
+export interface PlanTask {
+  id: string;
+  type: PlanTaskType;
+  title: string;
+  description: string;
+  referenceId?: string | null;
+  isComplete: boolean;
+  dueAt?: string | null;
+}
+
+export interface PlanWeek {
+  weekNumber: number;
+  theme: string;
+  tasks: PlanTask[];
+}
+
+export interface LearningPlan {
+  id: string;
+  goal: string;
+  summary?: string | null;
+  userId?: string | null;
+  weeks: PlanWeek[];
+  createdAt: string;
+}
+
+export interface GeneratePlanInput {
+  goal: string;
+  weekCount?: number;
+}
+
 export interface ApiResponse<T> {
   success: boolean;
   data?: T;
@@ -71,4 +160,14 @@ export interface ApiClient {
   createSession(title?: string): Promise<ChatSession>;
   getSession(id: string): Promise<ChatSession>;
   sendMessage(sessionId: string, message: string, topK?: number): Promise<ChatMessage>;
+  generateQuiz(input: GenerateQuizInput): Promise<Quiz>;
+  listQuizzes(page?: number, pageSize?: number): Promise<PagedResult<Quiz>>;
+  getQuiz(id: string): Promise<Quiz>;
+  startAttempt(quizId: string): Promise<QuizAttempt>;
+  submitAnswer(attemptId: string, input: SubmitAnswerInput): Promise<QuizAttempt>;
+  getAttempt(attemptId: string): Promise<QuizAttempt>;
+  generatePlan(input: GeneratePlanInput): Promise<LearningPlan>;
+  listPlans(page?: number, pageSize?: number): Promise<PagedResult<LearningPlan>>;
+  getPlan(id: string): Promise<LearningPlan>;
+  completeTask(planId: string, taskId: string): Promise<LearningPlan>;
 }

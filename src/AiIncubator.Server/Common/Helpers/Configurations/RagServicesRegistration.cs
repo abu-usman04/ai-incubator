@@ -4,7 +4,9 @@ using AiIncubator.Server.Services.Chat.Sessions;
 using AiIncubator.Server.Services.Documents;
 using AiIncubator.Server.Services.Embeddings;
 using AiIncubator.Server.Services.Ingestion;
+using AiIncubator.Server.Services.LearningPlans;
 using AiIncubator.Server.Services.Modules;
+using AiIncubator.Server.Services.Quizzes;
 using AiIncubator.Server.Services.Retrieval;
 using AiIncubator.Server.Services.VectorStore;
 using Qdrant.Client;
@@ -57,6 +59,15 @@ public static class RagServicesRegistration
 
         services.AddSingleton<IChatSessionStore, InMemoryChatSessionStore>();
         services.AddScoped<IChatService, ChatService>();
+
+        services.AddSingleton<QuizPromptBuilder>();
+        services.AddSingleton<IQuizRepository, InMemoryQuizRepository>();
+        services.AddSingleton<IQuizAttemptRepository, InMemoryQuizAttemptRepository>();
+        services.AddScoped<IQuizService, QuizService>();
+
+        services.AddSingleton<LearningPlanPromptBuilder>();
+        services.AddSingleton<ILearningPlanRepository, InMemoryLearningPlanRepository>();
+        services.AddScoped<ILearningPlanService, LearningPlanService>();
 
         return services;
     }

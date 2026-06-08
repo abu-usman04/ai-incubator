@@ -5,8 +5,14 @@ import type {
   ChatMessage,
   ChatSession,
   DocumentItem,
+  GeneratePlanInput,
+  GenerateQuizInput,
   KnowledgeModule,
+  LearningPlan,
   PagedResult,
+  Quiz,
+  QuizAttempt,
+  SubmitAnswerInput,
 } from './types';
 
 type TokenGetter = () => Promise<string | null>;
@@ -113,6 +119,63 @@ export function createHttpClient(getToken: TokenGetter): ApiClient {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message, topK }),
+      });
+    },
+
+    generateQuiz(input: GenerateQuizInput) {
+      return request<Quiz>('/api/quizzes', getToken, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(input),
+      });
+    },
+
+    listQuizzes(page = 1, pageSize = 20) {
+      return request<PagedResult<Quiz>>(`/api/quizzes?page=${page}&pageSize=${pageSize}`, getToken);
+    },
+
+    getQuiz(id: string) {
+      return request<Quiz>(`/api/quizzes/${id}`, getToken);
+    },
+
+    startAttempt(quizId: string) {
+      return request<QuizAttempt>(`/api/quizzes/${quizId}/attempts`, getToken, { method: 'POST' });
+    },
+
+    submitAnswer(attemptId: string, input: SubmitAnswerInput) {
+      return request<QuizAttempt>(`/api/quizzes/attempts/${attemptId}/answers`, getToken, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(input),
+      });
+    },
+
+    getAttempt(attemptId: string) {
+      return request<QuizAttempt>(`/api/quizzes/attempts/${attemptId}`, getToken);
+    },
+
+    generatePlan(input: GeneratePlanInput) {
+      return request<LearningPlan>('/api/learning-plans', getToken, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(input),
+      });
+    },
+
+    listPlans(page = 1, pageSize = 20) {
+      return request<PagedResult<LearningPlan>>(
+        `/api/learning-plans?page=${page}&pageSize=${pageSize}`,
+        getToken,
+      );
+    },
+
+    getPlan(id: string) {
+      return request<LearningPlan>(`/api/learning-plans/${id}`, getToken);
+    },
+
+    completeTask(planId: string, taskId: string) {
+      return request<LearningPlan>(`/api/learning-plans/${planId}/tasks/${taskId}/complete`, getToken, {
+        method: 'POST',
       });
     },
   };

@@ -5,6 +5,8 @@ import { Landing } from './pages/Landing';
 import { Dashboard } from './pages/Dashboard';
 import { Documents } from './pages/Documents';
 import { Chat } from './pages/Chat';
+import { Quiz } from './pages/Quiz';
+import { LearningPlan } from './pages/LearningPlan';
 import { SignInPage } from './pages/SignInPage';
 import { SignUpPage } from './pages/SignUpPage';
 
@@ -25,6 +27,8 @@ export default function App() {
         <Route index element={<Dashboard />} />
         <Route path="documents" element={<Documents />} />
         <Route path="chat" element={<Chat />} />
+        <Route path="quiz" element={<Quiz />} />
+        <Route path="plan" element={<LearningPlan />} />
       </Route>
     </Routes>
   );
